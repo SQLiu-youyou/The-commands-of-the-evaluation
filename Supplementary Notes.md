@@ -78,7 +78,7 @@ where **_[sup_read]_** are 1, 2, 3, 4, 5, 5, and 5 for 3×, 5×, 10×, 20×, 30�
 ## (3) SVIM
 ```
 svim alignment svim sim.srt.bam human_hs37d5.fasta --min_sv_size 30 --minimum_score 0 --minimum_depth 1
-grep -v “SUPPORT=1;\\|……\\|SUPPORT=**_[sup_read-1]_**;” svim/variant.vcf > ./svim.vcf
+grep -v “SUPPORT=1;\|……\|SUPPORT=**_[sup_read-1]_**;” svim/variant.vcf > ./svim.vcf
 where **_[sup_read]_** are 1, 2, 3, 4, 5, 5, and 5 for 3×, 5×, 10×, 20×, 30×, 40×, and 50× coverage datasets, respectively.
 ```
 ## (4) PBSV
