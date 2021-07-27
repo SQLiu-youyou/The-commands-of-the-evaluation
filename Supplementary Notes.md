@@ -79,7 +79,7 @@ where [sup_read] are 1, 2, 3, 4, 5, 5, and 5 for 3×, 5×, 10×, 20×, 30×, 40�
 ```
 svim alignment svim sim.srt.bam human_hs37d5.fasta --min_sv_size 30 --minimum_score 0 --minimum_depth 1
 grep -v “SUPPORT=1;\|……\|SUPPORT=[sup_read-1];” svim/variant.vcf > ./svim.vcf
-where **_[sup_read]_** are 1, 2, 3, 4, 5, 5, and 5 for 3×, 5×, 10×, 20×, 30×, 40×, and 50× coverage datasets, respectively.
+where [sup_read] are 1, 2, 3, 4, 5, 5, and 5 for 3×, 5×, 10×, 20×, 30×, 40×, and 50× coverage datasets, respectively.
 ```
 ## (4) PBSV
 ```
@@ -105,10 +105,10 @@ ls cutesv.vcf sniffles.vcf svim.vcf pbsv.vcf > sample_files
 git clone https://github.com/SQLiu-youyou/SV_evaluation.git
 bash covert_vcf.sh
 grep '[sv_type]\|#' chm1.vcf > [sv_type].chm1.vcf
-where [sv_type] are **DEL, INS, DUP and INV**
+where [sv_type] are DEL, INS, DUP and INV
 bgzip -c [all_type].chm1.vcf > [all_type].chm1.vcf.gz
 tabix [all_type].chm1.vcf.gz
-where [all_type] are **TOTAL, DEL, INS, DUP and INV**
+where [all_type] are TOTAL, DEL, INS, DUP and INV
 ```
 ## (2) Generation of comparison calling for Truvari
 ```
