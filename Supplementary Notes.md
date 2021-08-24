@@ -60,8 +60,8 @@ where [READLENGTH] represents 2.5k, 5k, 7.5k, 10k, 15k, 20k, 50k, 100k and 500k,
 ### (3) Generate long-reads under various sequencing error rates.
 ```
 VISOR LASeR -g human_hs37d5.fasta -s chm1/ -bed SHORtS.LASeR.bed -o 50×_20k_[ACCURATE] -c 50 -a [ACCURATE] -l 20000 --readstype PB --threads 8 --noaddtag 
-where [ACCURATE] represents 0.8, 0.85, 0.875, 0.9, 0.925, 0.95, 0.975, and 0.99, respectively.
-When [ACCURATE] represents 0.99 -ccs parameter should be settled
+where [ACCURATE] represents 0.8, 0.85, 0.875, 0.9, 0.925, 0.95, 0.975, 0.99, and 0.998 respectively.
+When [ACCURATE] represents 0.99 and 0.998 -ccs parameter should be settled
 ```
 
 # 3. Commands used for SV calling with each tool.
