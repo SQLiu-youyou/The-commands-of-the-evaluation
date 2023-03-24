@@ -48,7 +48,7 @@ paste inv_col1.txt inv_col2.txt | uniq > inv.bed
 ```
 cat del.bed ins.bed dup.bed inv.bed | sort -k 1,1 -k 2,2n > chm1.bed
 git clone https://github.com/SQLiu-youyou/SV_evaluation.git
-VISOR HACk -g human_hs37d5.fasta -bed SHORtS.LASeR.bed -o chm1
+VISOR HACk -g human_hs37d5.fasta -bed chm1.bed -o chm1
 ```
 ### 2.2 Generation of the synthetic diplontic long-reads within various sequencing attributes via VISOR.
 #### (1) Generate long-reads under various sequencing coverages.
