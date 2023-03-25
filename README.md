@@ -30,7 +30,7 @@ paste del_col1.txt del_col2.txt | uniq > del.bed
 ```
 grep EXPERIMENT=2 nstd137.GRCh37.variant_call.vcf | grep INS |awk -F '\t' '{print $1"\t"$2-1"\t"$2}' > ins_col1.txt
 grep EXPERIMENT=2 nstd137.GRCh37.variant_call.vcf | grep INS |awk -F '\t' '{print $8}' | awk -F ';SEQ=' '{print "insertion\t" $2 "\t0"}' >ins_col2.txt
-paste ins_col1.txt ins_col2.txt | uniq > del.bed
+paste ins_col1.txt ins_col2.txt | uniq > ins.bed
 ```
 #### (3) Extraction of duplication.bed.
 ```
@@ -68,7 +68,7 @@ where [ACCURATE] represents 0.8, 0.85, 0.875, 0.9, 0.925, 0.95, 0.975, 0.99, and
 When [ACCURATE] represents 0.99 and 0.998 -ccs parameter should be settled
 ```
 
-## 3. Commands used for SV calling with each tool.
+## 3. Commands used for SV calling with each tool and post-processing for successfully running Truvari. 
 ### (1) cuteSV
 ```
 cuteSV sim.srt.bam human_hs37d5.fasta cutesv.vcf ./ -s [sup_read] -l 30 –genotype -mi 0
@@ -76,8 +76,12 @@ where [sup_read] are 1, 2, 3, 4, 5, 5, and 5 for 3×, 5×, 10×, 20×, 30×, 40�
 ```
 ### (2) Sniffles
 ```
-sniffles -m sim.srt.bam -v sniffles.vcf -s [sup_read] -l 30 –genotype
+sniffles -m sim.srt.bam -v non_sniffles.vcf -s [sup_read] -l 30 –genotype
 where [sup_read] are 1, 2, 3, 4, 5, 5, and 5 for 3×, 5×, 10×, 20×, 30×, 40×, and 50× coverage datasets, respectively.
+post-processing:
+1.Sort : cat <(cat non_sniffles.vcf | grep "^#") <(cat non_sniffles.vcf | grep -vE "^#"| sort -k1,1 -k2,2g)> sniffles.vcf
+2.Manually add header : ##FILTER=<ID=STRANDBIAS,Description="An insertion that is longer than the read and thus we cannot predict the full size.">
+2*.The content in the quotation marks can be replaced by yoursely.
 ```
 ### (3) SVIM
 ```
@@ -91,11 +95,18 @@ pbsv discover sim.srt.bam pbsv.svsig.gz -s pbsv && pbsv call human_hs37d5.fasta 
 ```
 ### (5) NanoSV
 ```
-NanoSV sim.srt.bam -s samtools -o nanosv.vcf
+NanoSV sim.srt.bam -s samtools -o non_nanosv.vcf
+post-processing:
+1.Sort : cat <(cat non_nanosv.vcf | grep "^#") <(cat non_nanosv.vcf | grep -vE "^#"| sort -k1,1 -k2,2g)> nanosv.vcf
+2.Manually modify INFO header : change "RT=3" to "RT=1" 
+3.Manually modift FILTER header : change "Gap" to "GAP" 
 ```
 ### (6) NanoVar
 ```
 nanovar sim.srt.bam human_hs37d5.fasta nanovar -x pacbio-clr
+post-processing:
+1.cd nanovar
+2.grep -v "SVLEN=\." sim.srt.edit.nanovar.pass.vcf | grep -v "SVLEN=>" > nanovar.vcf
 ```
 ### (7) Ensemble calling
 ```
@@ -115,14 +126,6 @@ tabix [all_type].chm1.vcf.gz
 where [all_type] are TOTAL, DEL, INS, DUP and INV
 ```
 ### (2) Generation of comparison calling for Truvari
-```
-Sniffles.vcf should be sorted advanced, so does NanoSV.vcf
-grep '#' sniffles.vcf > head
-grep -v '#' sniffles.vcf > body
-sort -k 1,1 -k 2,2n body > Body
-cat head Body > sniffles.vcf
-rm head Body body
-```
 ```
 grep '[sv_type]\|#' [caller].vcf > [sv_type].[caller].vcf
 where [sv_type] are DEL, INS, DUP and INV, [caller] are cuteSV, Sniffles, SVIM, PBSV, NanoSV and NanoVar for coverage datasets and apart from NanoSV and NanoVar for read length and error rate datasets
