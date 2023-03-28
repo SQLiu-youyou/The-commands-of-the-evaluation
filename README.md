@@ -19,7 +19,7 @@ sed -i '/^[^>]/ y/BDEFHIJKLMNOPQRSUVWXYZbdefhijklmnopqrsuvwxyz/NNNNNNNNNNNNNNNNN
 ```
 
 ## 2. Commands used for simulating diverse settings of long-read.
-### 2.1 Integration of the SVs in CHM1 human sample from the nstd162 into the reference genome using VISOR.
+### 2.1 Integration of the SVs in CHM1 human sample from the nstd162 into the reference genome using VISOR(v 1.0).
 #### (1) Extraction of deletion.bed.
 ```
 grep CHM1 nstd162.GRCh37.variant_call.vcf | grep DEL | awk -F '\t' '{print $1"\t"$2}' > del_col1.txt
